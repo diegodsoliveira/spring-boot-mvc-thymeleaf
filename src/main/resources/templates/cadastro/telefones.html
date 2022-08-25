@@ -8,8 +8,8 @@
   <title>Sptring Boot + Thymeleaf + Materialize</title>
   <!--Import Google Icon Font-->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-  <link type="text/css" rel="stylesheet" href="/materialize-css/dist/css/materialize.min.css"
-    media="screen,projection" />
+  <!-- Compiled and minified CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
   <style>
     .navbar {
       background-color: rgb(238, 238, 238);
@@ -41,10 +41,13 @@
         <span>ID: </span><span th:text="${p.id}"></span>
         <span>, Nome: </span><span th:text="${p.nome}"></span>
         <span th:text="${p.sobrenome}"></span>
+        <div th:each="m : ${msgErro}">
+          <p th:text="${m}"></p>
+        </div>
       </div>
     </div>
     <form class="col s10" th:action="@{/addfonepessoa/{pessoaid}(pessoaid=${pessoaobj.id})}" id="formTelefone"
-      method="post">
+      method="post" onsubmit="return validarCampos()? true : false">
       <div class="row">
         <div class="input-field col s5">
           <input required id="numero" name="numero" type="text" class="validate"
@@ -93,7 +96,27 @@
   </div>
 
   <!--JavaScript at end of body for optimized loading-->
-  <script type="text/javascript" src="/materialize-css/dist/js/materialize.min.js"></script>
+  <!-- Compiled and minified JavaScript -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+  <script type="text/javascript">
+    function validarCampos() {
+      numero = document.getElementById('numero').value
+      tipo = document.getElementById('tipo').value
+
+      if (numero.trim() === '' || numero.trim() == null) {
+        alert('Número é obrigatório')
+        return false
+
+      } else if (tipo.trim() === '' || tipo.trim() == null) {
+        alert('Tipo é obrigatório')
+        return false
+      }
+
+      return true
+
+    }
+  </script>
 
 </body>
 

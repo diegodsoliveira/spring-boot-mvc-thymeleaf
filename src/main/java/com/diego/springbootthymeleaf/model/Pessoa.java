@@ -2,7 +2,6 @@ package com.diego.springbootthymeleaf.model;
 
 import java.io.Serializable;
 import java.util.List;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 public class Pessoa implements Serializable {
@@ -21,12 +21,14 @@ public class Pessoa implements Serializable {
   private Long id;
 
   @Column(nullable = false)
+  @NotBlank(message = "O nome é obrigatório.")
   private String nome;
 
+  @NotBlank(message = "O sobrenome é obrigatório.")
   @Column(nullable = false)
   private String sobrenome;
 
-  @OneToMany(mappedBy = "pessoa", orphanRemoval = true, cascade = CascadeType.REMOVE)
+  @OneToMany(mappedBy = "pessoa", orphanRemoval = true,  cascade = CascadeType.ALL)
   private List<Telefone> telefones;
 
   public List<Telefone> getTelefones() {
