@@ -28,23 +28,24 @@ public class Pessoa implements Serializable {
   @Column(nullable = false)
   private String sobrenome;
 
-  @OneToMany(mappedBy = "pessoa", orphanRemoval = true,  cascade = CascadeType.ALL)
+  @OneToMany(mappedBy = "pessoa", orphanRemoval = true, cascade = CascadeType.ALL)
   private List<Telefone> telefones;
 
-  public List<Telefone> getTelefones() {
-    return this.telefones;
+  @OneToMany(mappedBy = "pessoa", orphanRemoval = true, cascade = CascadeType.ALL)
+  private List<Endereco> enderecos;
+
+  private String sexo;
+
+  public Pessoa() {
+
   }
 
-  public void setTelefones(List<Telefone> telefones) {
-    this.telefones = telefones;
-  }
-
-  public Pessoa() {}
-
-  public Pessoa(Long id, String nome, String sobrenome) {
-    this.id = id;
+  public Pessoa(String nome, String sobrenome, List<Telefone> telefones, List<Endereco> enderecos, String sexo) {
     this.nome = nome;
     this.sobrenome = sobrenome;
+    this.telefones = telefones;
+    this.enderecos = enderecos;
+    this.sexo = sexo;
   }
 
   public Long getId() {
@@ -71,20 +72,27 @@ public class Pessoa implements Serializable {
     this.sobrenome = sobrenome;
   }
 
-  @Override
-  public String toString() {
-    return (
-      "{" +
-      " id='" +
-      getId() +
-      "'" +
-      ", nome='" +
-      getNome() +
-      "'" +
-      ", sobrenome='" +
-      getSobrenome() +
-      "'" +
-      "}"
-    );
+  public List<Telefone> getTelefones() {
+    return this.telefones;
+  }
+
+  public void setTelefones(List<Telefone> telefones) {
+    this.telefones = telefones;
+  }
+
+  public List<Endereco> getEnderecos() {
+    return this.enderecos;
+  }
+
+  public void setEnderecos(List<Endereco> enderecos) {
+    this.enderecos = enderecos;
+  }
+
+  public String getSexo() {
+    return this.sexo;
+  }
+
+  public void setSexo(String sexo) {
+    this.sexo = sexo;
   }
 }

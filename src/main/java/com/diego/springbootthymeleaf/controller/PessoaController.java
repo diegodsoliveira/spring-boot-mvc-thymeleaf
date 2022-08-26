@@ -3,6 +3,7 @@ package com.diego.springbootthymeleaf.controller;
 import com.diego.springbootthymeleaf.dto.PessoaDTO;
 import com.diego.springbootthymeleaf.model.Pessoa;
 import com.diego.springbootthymeleaf.repository.PessoaRepository;
+import com.diego.springbootthymeleaf.repository.TelefoneRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +27,9 @@ public class PessoaController {
 
   @Autowired
   private PessoaRepository pessoaRepository;
+
+  @Autowired
+  private TelefoneRepository telefoneRepository;
 
   @GetMapping("/cadastropessoa")
   public ModelAndView inicio() {
@@ -54,13 +58,7 @@ public class PessoaController {
       return modelAndView;
     }
     
-    Pessoa pessoa = new Pessoa();
-    
-    pessoa.setId(pessoaDto.getId());
-    pessoa.setNome(pessoaDto.getNome());
-    pessoa.setSobrenome(pessoaDto.getSobrenome());
-    pessoa.setTelefones(pessoaDto.getTelefones());
-    pessoaRepository.save(pessoa);
+    pessoaRepository.save(pessoaDto.transformaPUsuario());
     
     Iterable<Pessoa> peIterable = pessoaRepository.findAll();
     modelAndView.addObject("pessoas", peIterable);
