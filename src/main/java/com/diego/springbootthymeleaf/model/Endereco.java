@@ -18,12 +18,13 @@ public class Endereco implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
+  
   private String cep;
   private String rua;
   private String bairro;
   private String cidade;
   private String uf;
-  private String ibge;
+  private String numero;
 
   @ManyToOne
   @ForeignKey(name = "pessoa_id")
@@ -77,12 +78,12 @@ public class Endereco implements Serializable {
     this.uf = uf;
   }
 
-  public String getIbge() {
-    return this.ibge;
+  public String getNumero() {
+    return this.numero;
   }
 
-  public void setIbge(String ibge) {
-    this.ibge = ibge;
+  public void setNumero(String numero) {
+    this.numero = numero;
   }
 
   public Pessoa getPessoa() {

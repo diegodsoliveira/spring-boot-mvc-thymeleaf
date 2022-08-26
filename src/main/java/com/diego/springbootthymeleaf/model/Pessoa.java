@@ -37,7 +37,6 @@ public class Pessoa implements Serializable {
   private String sexo;
 
   public Pessoa() {
-
   }
 
   public Pessoa(String nome, String sobrenome, List<Telefone> telefones, List<Endereco> enderecos, String sexo) {
@@ -45,6 +44,13 @@ public class Pessoa implements Serializable {
     this.sobrenome = sobrenome;
     this.telefones = telefones;
     this.enderecos = enderecos;
+    this.sexo = sexo;
+  }
+
+  public Pessoa(Long id, String nome, String sobrenome, String sexo) {
+    this.id = id;
+    this.nome = nome;
+    this.sobrenome = sobrenome;
     this.sexo = sexo;
   }
 

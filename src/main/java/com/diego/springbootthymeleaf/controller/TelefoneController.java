@@ -2,6 +2,7 @@ package com.diego.springbootthymeleaf.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -23,6 +24,8 @@ import com.diego.springbootthymeleaf.repository.TelefoneRepository;
 @Controller
 public class TelefoneController {
 
+  private static final String CADASTRO_TELEFONES = "cadastro/telefones";
+
   @Autowired
   private PessoaRepository pessoaRepository;
 
@@ -31,60 +34,61 @@ public class TelefoneController {
 
   @GetMapping("/telefones/{idpessoa}")
   public ModelAndView telefones(@PathVariable("idpessoa") Long idpessoa) {
-    ModelAndView modelAndView = new ModelAndView("cadastro/telefones");
+    ModelAndView modelAndView = new ModelAndView(CADASTRO_TELEFONES);
 
-    Pessoa pessoa = pessoaRepository.findById(idpessoa).get();
+    Optional<Pessoa> optional = pessoaRepository.findById(idpessoa);
 
-    modelAndView.addObject("pessoaobj", pessoa);
-    modelAndView.addObject(
-      "telefones",
-      telefoneRepository.findTelefonesById(idpessoa)
-    );
+    if (optional.isPresent()) {
 
+      modelAndView.addObject("pessoaobj", optional.get());
+      modelAndView.addObject("telefones",
+          telefoneRepository.findTelefonesById(idpessoa));
+    }
     return modelAndView;
   }
 
   @PostMapping("**/addfonepessoa/{pessoaid}")
-  public ModelAndView addTelefone(@Valid TelefoneDTO telefonetDto, @PathVariable("pessoaid") Long pessoaid, BindingResult bindingResult) {
-    ModelAndView modelAndView = new ModelAndView("cadastro/telefones");
-    Pessoa pessoa = pessoaRepository.findById(pessoaid).get();
-    modelAndView.addObject("pessoaobj", pessoa);
+  public ModelAndView salvarTelefone(@Valid TelefoneDTO telefonetDto, @PathVariable("pessoaid") Long pessoaid,
+      BindingResult bindingResult) {
     
+    ModelAndView modelAndView = new ModelAndView(CADASTRO_TELEFONES);
+
+    Optional<Pessoa> optional = pessoaRepository.findById(pessoaid);
+
     if (bindingResult.hasErrors()) {
-      List<String> msgErro = new ArrayList<>();
-      
+      List<String> msgErro = new ArrayList<String>();
+
       for (ObjectError objectError : bindingResult.getAllErrors()) {
         msgErro.add(objectError.getDefaultMessage());
       }
       modelAndView.addObject("msgErro", msgErro);
       return modelAndView;
     }
-    
-    Telefone telefone = new Telefone();
-    
-    telefone.setPessoa(pessoa);
-    telefone.setNumero(telefonetDto.getNumero());
-    telefone.setTipo(telefonetDto.getTipo());
-    telefoneRepository.save(telefone);
-    
-    modelAndView.addObject("telefones", telefoneRepository.findTelefonesById(pessoa.getId()));
+
+    if (optional.isPresent()) {
+      telefoneRepository.save(telefonetDto.transformaDtoParaTelefone());
+      
+      modelAndView.addObject("pessoaobj", optional.get());
+      modelAndView.addObject("telefones", telefoneRepository.findTelefonesById(pessoaid));
+
+    }
     return modelAndView;
   }
 
   @GetMapping("**/deletarfonepessoa/{telefoneid}")
   public ModelAndView deletarFonePessoa(@PathVariable("telefoneid") Long telefoneid) {
-    Pessoa pessoa = telefoneRepository.findById(telefoneid).get().getPessoa();
+    ModelAndView modelAndView = new ModelAndView(CADASTRO_TELEFONES);
+    
+    Optional<Telefone> optional = telefoneRepository.findById(telefoneid);
 
-    telefoneRepository.deleteById(telefoneid);
-
-    ModelAndView modelAndView = new ModelAndView("cadastro/telefones");
-
-    modelAndView.addObject("pessoaobj", pessoa);
-    modelAndView.addObject(
-      "telefones",
-      telefoneRepository.findTelefonesById(pessoa.getId())
-    );
-
+    if (optional.isPresent()) {
+      telefoneRepository.deleteById(telefoneid);
+      
+      modelAndView.addObject("pessoaobj", optional.get().getPessoa());
+      modelAndView.addObject(
+          "telefones",
+          telefoneRepository.findTelefonesById(optional.get().getPessoa().getId()));
+    }
     return modelAndView;
   }
 }

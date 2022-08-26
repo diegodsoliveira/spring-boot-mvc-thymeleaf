@@ -2,13 +2,20 @@ package com.diego.springbootthymeleaf.dto;
 
 import java.io.Serializable;
 
+import com.diego.springbootthymeleaf.model.Pessoa;
+import com.diego.springbootthymeleaf.model.Telefone;
+
 public class TelefoneDTO implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
   private String numero;
   private String tipo;
-  private PessoaDTO pessoaDTO;
+  private Pessoa pessoa;
+
+  public Telefone transformaDtoParaTelefone() {
+    return new Telefone(numero, tipo, pessoa);
+  }
 
   public String getNumero() {
     return this.numero;
@@ -26,11 +33,11 @@ public class TelefoneDTO implements Serializable {
     this.tipo = tipo;
   }
 
-  public PessoaDTO getPessoaDTO() {
-    return this.pessoaDTO;
+  public Pessoa getPessoa() {
+    return this.pessoa;
   }
 
-  public void setPessoaDTO(PessoaDTO pessoaDTO) {
-    this.pessoaDTO = pessoaDTO;
+  public void setPessoa(Pessoa pessoa) {
+    this.pessoa = pessoa;
   }
 }
