@@ -34,6 +34,7 @@ public class Pessoa implements Serializable {
   @OneToMany(mappedBy = "pessoa", orphanRemoval = true, cascade = CascadeType.ALL)
   private List<Endereco> enderecos;
 
+  @Column(nullable = false)
   private String sexo;
 
   public Pessoa() {

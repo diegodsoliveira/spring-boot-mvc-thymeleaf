@@ -2,6 +2,7 @@ package com.diego.springbootthymeleaf.model;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,17 +19,41 @@ public class Endereco implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
-  
+
+  @Column(nullable = false)
   private String cep;
+
+  @Column(nullable = false)
   private String rua;
+
+  @Column(nullable = false)
   private String bairro;
+
+  @Column(nullable = false)
   private String cidade;
+
+  @Column(nullable = false)
   private String uf;
+
+  @Column(nullable = false)
   private String numero;
 
   @ManyToOne
   @ForeignKey(name = "pessoa_id")
   private Pessoa pessoa;
+
+  public Endereco(Long id, String cep, String rua, String bairro, String cidade, String uf, String numero, Pessoa pessoa) {
+    this.cep = cep;
+    this.rua = rua;
+    this.bairro = bairro;
+    this.cidade = cidade;
+    this.uf = uf;
+    this.numero = numero;
+    this.pessoa = pessoa;
+  }
+
+  public Endereco() {
+  }
 
   public Long getId() {
     return this.id;
@@ -93,4 +118,19 @@ public class Endereco implements Serializable {
   public void setPessoa(Pessoa pessoa) {
     this.pessoa = pessoa;
   }
+
+  @Override
+  public String toString() {
+    return "{" +
+        " id='" + getId() + "'" +
+        ", cep='" + getCep() + "'" +
+        ", rua='" + getRua() + "'" +
+        ", bairro='" + getBairro() + "'" +
+        ", cidade='" + getCidade() + "'" +
+        ", uf='" + getUf() + "'" +
+        ", numero='" + getNumero() + "'" +
+        ", pessoa='" + getPessoa() + "'" +
+        "}";
+  }
+
 }

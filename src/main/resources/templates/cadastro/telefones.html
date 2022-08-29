@@ -36,7 +36,8 @@
 
   <div class="container">
     <h5>Cadastrar telefones</h5>
-    <div class="row">
+    <form class="col s10" th:action="@{/addfonepessoa/{pessoaid}(pessoaid=${pessoaobj.id})}" id="formTelefone"
+      method="post" onsubmit="return validarCampos()? true : false">
       <div th:each="p : ${pessoaobj}">
         <span>ID: </span><span th:text="${p.id}"></span>
         <span>, Nome: </span><span th:text="${p.nome}"></span>
@@ -45,9 +46,6 @@
           <p th:text="${m}"></p>
         </div>
       </div>
-    </div>
-    <form class="col s10" th:action="@{/addfonepessoa/{pessoaid}(pessoaid=${pessoaobj.id})}" id="formTelefone"
-      method="post" onsubmit="return validarCampos()? true : false">
       <div class="row">
         <div class="input-field col s5">
           <input required id="numero" name="numero" type="text" class="validate"
@@ -66,11 +64,18 @@
         <button type="submit" class="waves-effect waves-light btn">
           <i class="material-icons left">save</i>Salvar
         </button>
+        <a th:href="@{/endereco/{idpessoa}(idpessoa=${pessoaobj.id})}" type="button"
+          class="waves-effect waves-light btn">
+          <i class="material-icons left"><span class="material-symbols-outlined">
+              home
+            </span></i>Endereços
+        </a>
         <a href="/cadastropessoa" type="button" class="waves-effect waves-light btn">
           <i class="material-icons left"><span class="material-symbols-outlined">
               arrow_back_ios
             </span></i>Voltar
         </a>
+
       </div>
     </form>
     <div class="row">
@@ -100,6 +105,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 
   <script type="text/javascript">
+
     function validarCampos() {
       numero = document.getElementById('numero').value
       tipo = document.getElementById('tipo').value

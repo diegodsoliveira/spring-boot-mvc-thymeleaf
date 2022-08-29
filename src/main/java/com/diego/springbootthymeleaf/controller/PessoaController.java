@@ -66,7 +66,7 @@ public class PessoaController {
     Pessoa pessoa = pessoaDto.transformaPUsuario();
     pessoa.setTelefones(telefoneRepository.findTelefonesById(pessoa.getId()));
     pessoa.setEnderecos(enderecoRepository.findAdressById(pessoa.getId()));
-    pessoaRepository.save(pessoaDto.transformaPUsuario());
+    pessoaRepository.save(pessoa);
 
     Iterable<Pessoa> peIterable = pessoaRepository.findAll();
     modelAndView.addObject("pessoas", peIterable);

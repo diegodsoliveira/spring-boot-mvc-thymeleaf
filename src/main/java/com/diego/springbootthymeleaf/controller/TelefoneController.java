@@ -56,7 +56,7 @@ public class TelefoneController {
     Optional<Pessoa> optional = pessoaRepository.findById(pessoaid);
 
     if (bindingResult.hasErrors()) {
-      List<String> msgErro = new ArrayList<String>();
+      List<String> msgErro = new ArrayList<>();
 
       for (ObjectError objectError : bindingResult.getAllErrors()) {
         msgErro.add(objectError.getDefaultMessage());
@@ -66,6 +66,7 @@ public class TelefoneController {
     }
 
     if (optional.isPresent()) {
+      telefonetDto.setPessoa(optional.get());
       telefoneRepository.save(telefonetDto.transformaDtoParaTelefone());
       
       modelAndView.addObject("pessoaobj", optional.get());

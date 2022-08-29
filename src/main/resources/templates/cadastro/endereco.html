@@ -38,41 +38,40 @@
     <h5>Cadastrar endereços</h5>
     <div class="row">
       <div th:each="p : ${pessoaobj}">
-        <span>ID: </span><span th:text="${p.id}"></span>
-        <span>, Nome: </span><span th:text="${p.nome}"></span>
-        <span th:text="${p.sobrenome}"></span>
+        <b><span th:text="${p.nome}"></span>
+          <span th:text="${p.sobrenome}"></span></b>
         <div th:each="m : ${msgErro}">
           <p th:text="${m}"></p>
         </div>
       </div>
     </div>
-    <form class="col s10" th:action="@{/salvartelefone/{pessoaid}(pessoaid=${pessoaobj.id})}" id="formEndereco"
-      method="post">
+    <form class="col s10" th:action="@{/salvarendereco/{pessoaid}(pessoaid=${pessoaobj.id})}" id="formEndereco"
+      method="post" th:object="${pessoaobj}">
       <div class="row">
         <div class="input-field col s2">
-          <input required id="cep" type="text" class="validate" th:field="*{cep}">
+          <input required id="cep" type="text" class="validate" name="cep">
           <label for="cep">Cep</label>
         </div>
         <div class="input-field col s5">
-          <input required id="rua" type="text" class="validate" th:field="*{rua}">
+          <input required id="rua" type="text" class="validate" name="rua">
           <label for="rua">Rua</label>
         </div>
         <div class="input-field col s3">
-          <input required id="bairro" type="text" class="validate" th:field="*{bairro}">
+          <input required id="bairro" type="text" class="validate" name="bairro">
           <label for="sobrenome">Bairro</label>
         </div>
       </div>
       <div class="row">
         <div class="input-field col s3">
-          <input required id="numero" type="text" class="validate" th:field="*{numero}">
+          <input required id="numero" type="text" class="validate" name="numero">
           <label for="numero">Número</label>
         </div>
         <div class="input-field col s5">
-          <input required id="cidade" type="text" class="validate" th:field="*{cidade}">
+          <input required id="cidade" type="text" class="validate" name="cidade">
           <label for="cidade">Cidade</label>
         </div>
         <div class="input-field col s2">
-          <input required id="uf" type="text" class="validate" th:field="*{uf}">
+          <input required id="uf" type="text" class="validate" name="uf">
           <label for="uf">UF</label>
         </div>
       </div>
@@ -95,15 +94,25 @@
         <table class="striped highlight">
           <thead>
             <tr>
-              <th>Tipo</th>
-              <th>Telefone</th>
+              <th>#</th>
+              <th>Cep</th>
+              <th>Rua</th>
+              <th>Número</th>
+              <th>Bairro</th>
+              <th>Cidade</th>
+              <th>UF</th>
             </tr>
           </thead>
-          <tr th:each="t : ${telefones}">
-            <td th:text="${t.numero}"></td>
-            <td th:text="${t.tipo}"></td>
+          <tr th:each="end : ${enderecos}">
+            <td th:text="${end.id}"></td>
+            <td th:text="${end.cep}"></td>
+            <td th:text="${end.rua}"></td>
+            <td th:text="${end.numero}"></td>
+            <td th:text="${end.bairro}"></td>
+            <td th:text="${end.cidade}"></td>
+            <td th:text="${end.uf}"></td>
             <td class="row">
-              <a class="col red-text" th:href="@{/deletarfonepessoa/{telefoneid}(telefoneid=${t.id})}">Excluir</a>
+              <a class="col red-text" th:href="@{/deletarendereco/{enderecoid}(enderecoid=${end.id})}">Excluir</a>
             </td>
           </tr>
         </table>
@@ -185,23 +194,23 @@
       });
     });
 /*
-        function validarCampos() {
-          numero = document.getElementById('numero').value
-          tipo = document.getElementById('tipo').value
-    
-          if (numero.trim() === '' || numero.trim() == null) {
-            alert('Número é obrigatório')
-            return false
-    
-          } else if (tipo.trim() === '' || tipo.trim() == null) {
-            alert('Tipo é obrigatório')
-            return false
-          }
-    
-          return true
-    
-        }
-       */
+                            function validarCampos() {
+                              numero = document.getElementById('numero').value
+                              tipo = document.getElementById('tipo').value
+                        
+                              if (numero.trim() === '' || numero.trim() == null) {
+                                alert('Número é obrigatório')
+                                return false
+                        
+                              } else if (tipo.trim() === '' || tipo.trim() == null) {
+                                alert('Tipo é obrigatório')
+                                return false
+                              }
+                        
+                              return true
+                        
+                            }
+                           */
   </script>
 
 </body>
