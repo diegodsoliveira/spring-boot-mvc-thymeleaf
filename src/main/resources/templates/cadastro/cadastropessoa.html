@@ -108,8 +108,16 @@
       <form class="col s10" action="pesquisarpessoa" method="post">
         <div class="input-field">
           <div class="col s4">
-            <input placeholder="O que quer pesquisar?" id="nomepesquisa" name="nomepesquisa" type="text"
+            <input placeholder="Pesquisa por nome" id="nomepesquisa" name="nomepesquisa" type="text"
               class="validate">
+          </div>
+          <div class="input-field col s3">
+            <select class="browser-default" id="pesquisaSexo" name="pesquisaSexo">
+              <option value="" th:text="--[Todos]--"></option>
+              <option value="MASCULINO" th:text="Masculino"></option>
+              <option value="FEMININO" th:text="Feminino"></option>
+            </select>
+            <label class="active" for="pesquisaSexo">Filtro</label>
           </div>
           <div class="col s4">
             <button type="submit" class="waves-effect waves-light btn">
