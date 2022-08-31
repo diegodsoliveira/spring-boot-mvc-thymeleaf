@@ -1,15 +1,24 @@
 package com.diego.springbootthymeleaf.model;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotBlank;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 public class Pessoa implements Serializable {
@@ -37,22 +46,49 @@ public class Pessoa implements Serializable {
   @Column(nullable = false)
   private String sexo;
 
-  public Pessoa() {
+  @ManyToOne
+  private Profissao profissao;
+
+  @Enumerated(EnumType.STRING)
+  private Cargo cargo;
+
+  @DateTimeFormat(pattern = "yyyy-MM-dd")
+  @Temporal(TemporalType.DATE)
+  private Date dataNascimento;
+
+  @Lob
+  private byte[] curriculo;
+
+  public void setCurriculo(byte[] curriculo) {
+    this.curriculo = curriculo;
   }
 
-  public Pessoa(String nome, String sobrenome, List<Telefone> telefones, List<Endereco> enderecos, String sexo) {
-    this.nome = nome;
-    this.sobrenome = sobrenome;
-    this.telefones = telefones;
-    this.enderecos = enderecos;
-    this.sexo = sexo;
+  public byte[] getCurriculo() {
+    return curriculo;
   }
 
-  public Pessoa(Long id, String nome, String sobrenome, String sexo) {
-    this.id = id;
-    this.nome = nome;
-    this.sobrenome = sobrenome;
-    this.sexo = sexo;
+  public void setDataNascimento(Date dataNascimento) {
+    this.dataNascimento = dataNascimento;
+  }
+
+  public Date getDataNascimento() {
+    return dataNascimento;
+  }
+
+  public Cargo getCargo() {
+    return this.cargo;
+  }
+
+  public void setCargo(Cargo cargo) {
+    this.cargo = cargo;
+  }
+
+  public Profissao getProfissao() {
+    return this.profissao;
+  }
+
+  public void setProfissao(Profissao profissao) {
+    this.profissao = profissao;
   }
 
   public Long getId() {

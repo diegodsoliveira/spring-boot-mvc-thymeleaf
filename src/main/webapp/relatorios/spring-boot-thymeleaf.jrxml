@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.0.final using JasperReports Library version 6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="spring-boot-thymeleaf" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="783001ee-c419-4254-a886-bb720203f4f4">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Coleção Projeto Spring Boot Thymeleaf"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="enderecos" class="java.util.List">
+		<fieldDescription><![CDATA[enderecos]]></fieldDescription>
+	</field>
+	<field name="nome" class="java.lang.String">
+		<fieldDescription><![CDATA[nome]]></fieldDescription>
+	</field>
+	<field name="id" class="java.lang.Long">
+		<fieldDescription><![CDATA[id]]></fieldDescription>
+	</field>
+	<field name="sexo" class="java.lang.String">
+		<fieldDescription><![CDATA[sexo]]></fieldDescription>
+	</field>
+	<field name="sobrenome" class="java.lang.String">
+		<fieldDescription><![CDATA[sobrenome]]></fieldDescription>
+	</field>
+	<field name="telefones" class="java.util.List">
+		<fieldDescription><![CDATA[telefones]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="43" splitType="Stretch">
+			<staticText>
+				<reportElement x="110" y="0" width="350" height="43" uuid="7f6beef3-d096-40b1-8514-c57e44e79e6a"/>
+				<textElement textAlignment="Center">
+					<font size="30"/>
+				</textElement>
+				<text><![CDATA[Relatório de pessoas]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="51">
+			<staticText>
+				<reportElement x="0" y="0" width="40" height="40" uuid="4a2dcfb5-35d8-4758-a06c-9c4d09286be1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[# ID]]></text>
+			</staticText>
+			<line>
+				<reportElement x="2" y="50" width="551" height="1" uuid="8aa6f4d2-9d7a-435e-bef4-6b83f1f91c38"/>
+			</line>
+			<staticText>
+				<reportElement x="40" y="0" width="280" height="40" uuid="e1c4f8cc-505c-4329-bb2d-210dc3589563">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f2204138-75cd-4c52-90e0-e37628673507"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Nome]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="40" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="10" width="40" height="30" uuid="dfbce0b2-7f3f-4fcf-bf64-35597216c20e"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="40" y="10" width="280" height="30" uuid="228fda5a-4a12-4669-bfec-67493f1f2045">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f2204138-75cd-4c52-90e0-e37628673507"/>
+				</reportElement>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nome}+" "+$F{sobrenome}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

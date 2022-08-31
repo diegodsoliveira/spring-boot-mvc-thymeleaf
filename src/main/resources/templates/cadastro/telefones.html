@@ -36,17 +36,21 @@
 
   <div class="container">
     <h5>Cadastrar telefones</h5>
-    <form class="col s10" th:action="@{/addfonepessoa/{pessoaid}(pessoaid=${pessoaobj.id})}" id="formTelefone"
-      method="post" onsubmit="return validarCampos()? true : false">
-      <div th:each="p : ${pessoaobj}">
-        <span>ID: </span><span th:text="${p.id}"></span>
-        <span>, Nome: </span><span th:text="${p.nome}"></span>
-        <span th:text="${p.sobrenome}"></span>
-        <div th:each="m : ${msgErro}">
-          <p th:text="${m}"></p>
-        </div>
+    <div th:each="p : ${pessoaobj}">
+      <span>ID: </span><span th:text="${p.id}"></span>
+      <span>, Nome: </span><span th:text="${p.nome}"></span>
+      <span th:text="${p.sobrenome}"></span>
+      <div th:each="m : ${msgErro}">
+        <p th:text="${m}"></p>
       </div>
+    </div>
+    <form class="col s10" th:action="@{/addfonepessoa/{pessoaid}(pessoaid=${pessoaobj.id})}" id="formTelefone"
+      method="post" onsubmit="return validarCampos()? true : false" th:object="${pessoaobj}">
       <div class="row">
+        <div class="input-field col s1">
+          <input readonly id="id" type="text" class="validate">
+          <label for="id">ID</label>
+        </div>
         <div class="input-field col s5">
           <input required id="numero" name="numero" type="text" class="validate"
             placeholder="Insira o número de telefone">
@@ -55,6 +59,9 @@
         <div class="input-field col s5">
           <input required placeholder="Casa, comercial, celular..." id="tipo" name="tipo" type="text" class="validate">
           <label for="tipo">Tipo</label>
+        </div>
+        <div class="input-fied">
+          <input type="text" hidden name="pessoa" id="pessoa" th:value="${pessoaobj.id}">
         </div>
       </div>
       <div class="row">
@@ -83,11 +90,13 @@
         <table class="striped highlight">
           <thead>
             <tr>
+              <th>ID</th>
               <th>Tipo</th>
               <th>Telefone</th>
             </tr>
           </thead>
           <tr th:each="t : ${telefones}">
+            <td th:text="${t.id}"></td>
             <td th:text="${t.numero}"></td>
             <td th:text="${t.tipo}"></td>
             <td class="row">

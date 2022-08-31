@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.diego.springbootthymeleaf.dto.TelefoneDTO;
 import com.diego.springbootthymeleaf.model.Pessoa;
 import com.diego.springbootthymeleaf.model.Telefone;
 import com.diego.springbootthymeleaf.repository.PessoaRepository;
@@ -48,7 +47,7 @@ public class TelefoneController {
   }
 
   @PostMapping("**/addfonepessoa/{pessoaid}")
-  public ModelAndView salvarTelefone(@Valid TelefoneDTO telefonetDto, @PathVariable("pessoaid") Long pessoaid,
+  public ModelAndView salvarTelefone(@Valid Telefone telefone, @PathVariable("pessoaid") Long pessoaid,
       BindingResult bindingResult) {
     
     ModelAndView modelAndView = new ModelAndView(CADASTRO_TELEFONES);
@@ -66,8 +65,7 @@ public class TelefoneController {
     }
 
     if (optional.isPresent()) {
-      telefonetDto.setPessoa(optional.get());
-      telefoneRepository.save(telefonetDto.transformaDtoParaTelefone());
+      telefoneRepository.save(telefone);
       
       modelAndView.addObject("pessoaobj", optional.get());
       modelAndView.addObject("telefones", telefoneRepository.findTelefonesById(pessoaid));

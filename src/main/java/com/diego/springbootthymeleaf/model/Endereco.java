@@ -42,20 +42,6 @@ public class Endereco implements Serializable {
   @ForeignKey(name = "pessoa_id")
   private Pessoa pessoa;
 
-  public Endereco(Long id, String cep, String rua, String bairro, String cidade, String uf, String numero, Pessoa pessoa) {
-    this.id = id;
-    this.cep = cep;
-    this.rua = rua;
-    this.bairro = bairro;
-    this.cidade = cidade;
-    this.uf = uf;
-    this.numero = numero;
-    this.pessoa = pessoa;
-  }
-
-  public Endereco() {
-  }
-
   public Long getId() {
     return this.id;
   }

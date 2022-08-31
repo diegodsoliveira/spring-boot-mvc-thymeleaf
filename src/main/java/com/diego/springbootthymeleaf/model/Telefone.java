@@ -30,15 +30,6 @@ public class Telefone implements Serializable {
   @ForeignKey(name = "pessoa_id")
   private Pessoa pessoa;
 
-  public Telefone(String numero, String tipo, Pessoa pessoa) {
-    this.numero = numero;
-    this.tipo = tipo;
-    this.pessoa = pessoa;
-  }
-
-  public Telefone() {
-  }
-
   public long getId() {
     return this.id;
   }

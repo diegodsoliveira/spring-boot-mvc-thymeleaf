@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.diego.springbootthymeleaf.dto.EnderecoDTO;
 import com.diego.springbootthymeleaf.model.Endereco;
 import com.diego.springbootthymeleaf.model.Pessoa;
 import com.diego.springbootthymeleaf.repository.EnderecoRepository;
@@ -45,7 +44,7 @@ public class EnderecoController {
   }
 
   @PostMapping("**/salvarendereco/{pessoaid}")
-  public ModelAndView salvarEndereco(@Valid EnderecoDTO enderecoDTO, @PathVariable("pessoaid") Long pessoaid,
+  public ModelAndView salvarEndereco(@Valid Endereco endereco, @PathVariable("pessoaid") Long pessoaid,
       BindingResult bindingResult) {
 
     ModelAndView modelAndView = new ModelAndView("cadastro/endereco");
@@ -63,8 +62,7 @@ public class EnderecoController {
     }
 
     if (optional.isPresent()) {
-      enderecoDTO.setPessoa(optional.get());
-      enderecoRepository.save(enderecoDTO.transformaDtoParaObjeto());
+      enderecoRepository.save(endereco);
 
       modelAndView.addObject("pessoaobj", optional.get());
       modelAndView.addObject("enderecos", enderecoRepository.findAdressById(pessoaid));
