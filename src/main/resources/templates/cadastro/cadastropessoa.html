@@ -28,6 +28,7 @@
     .h5 {
       font-weight: 600 !important;
       color: rgb(114, 110, 110);
+      margin: 0 auto;
     }
 
     .center {
@@ -37,8 +38,11 @@
 </head>
 
 <body>
-  <div class="navbar">
-    <h5 class="h5">Sptring Boot + Thymeleaf + Materialize</h5>
+  <div class="navbar col s10 m8 l9">
+    <div class="row">
+      <h5 class="h5 col s8 center">Sptring Boot + Thymeleaf + Materialize</h5>
+      <a th:href="@{/logout}"><i class="material-icons center tooltipped col s1" data-position="left" data-tooltip="Sair">logout</i></a>
+    </div>
   </div>
 
   <div class="container" sec:authorize="hasRole('ROLE_ADMIN')">
