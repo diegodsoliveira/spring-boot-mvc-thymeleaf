@@ -51,7 +51,7 @@ public class PessoaController {
   @Autowired
   private ReportUtil reportUtil;
 
-  @GetMapping("/cadastropessoa")
+  @GetMapping("**/listarpessoas")
   public ModelAndView inicio() {
     ModelAndView modelAndView = new ModelAndView(CADASTROPESSOA);
     modelAndView.addObject("pessoas", pessoaRepository.findAll(PageRequest.of(0, 5, Sort.by("nome"))));
@@ -64,13 +64,13 @@ public class PessoaController {
   @GetMapping("**/pessoaspag")
   public ModelAndView carregaPessoaPorPaginacao(@PageableDefault(size = 5) Pageable pageable,
       ModelAndView modelAndView, @RequestParam("nomepesquisa") String nomepesquisa) {
-   modelAndView.addObject("pessoas", pessoaRepository.findPessoaByNamePage(nomepesquisa, pageable));
-   modelAndView.addObject("pessoaobj", new Pessoa());
-   modelAndView.addObject("nomepesquisa", nomepesquisa);
-   modelAndView.addObject("profissoes", profissaoRepository.findAll());
-   modelAndView.setViewName(CADASTROPESSOA);
+    modelAndView.addObject("pessoas", pessoaRepository.findPessoaByNamePage(nomepesquisa, pageable));
+    modelAndView.addObject("pessoaobj", new Pessoa());
+    modelAndView.addObject("nomepesquisa", nomepesquisa);
+    modelAndView.addObject("profissoes", profissaoRepository.findAll());
+    modelAndView.setViewName(CADASTROPESSOA);
 
-   return modelAndView;
+    return modelAndView;
   }
 
   @PostMapping(value = "**/salvarpessoa", consumes = { "multipart/form-data" })
@@ -118,17 +118,6 @@ public class PessoaController {
     return modelAndView;
   }
 
-  @GetMapping("**/listarpessoas")
-  public ModelAndView listarPessoas() {
-    ModelAndView modelAndView = new ModelAndView(CADASTROPESSOA);
-
-    modelAndView.addObject("pessoas", pessoaRepository.findAll(PageRequest.of(0, 5, Sort.by("nome"))));
-    modelAndView.addObject("pessoaobj", new Pessoa());
-    modelAndView.addObject("profissoes", profissaoRepository.findAll());
-
-    return modelAndView;
-  }
-
   @GetMapping("**/editarpessoa/{idpessoa}")
   public ModelAndView editarPessoa(@PathVariable("idpessoa") Long idpessoa) {
     ModelAndView modelAndView = new ModelAndView(CADASTROPESSOA);
@@ -162,12 +151,25 @@ public class PessoaController {
 
     ModelAndView modelAndView = new ModelAndView(CADASTROPESSOA);
 
-    if (pesquisaSexo != null && !pesquisaSexo.isEmpty()) {
+    if (pesquisaSexo != null && !pesquisaSexo.isEmpty()
+        && nomepesquisa != null && !nomepesquisa.isEmpty()) {
+
       modelAndView.addObject("pessoas",
           pessoaRepository.findPessoaByNameAndSexoPage(nomepesquisa, pesquisaSexo, pageable));
-    } else {
+
+    } else if (pesquisaSexo != null && !pesquisaSexo.isEmpty()) {
+
+      modelAndView.addObject("pessoas",
+          pessoaRepository.findPessoaBySexoPage(pesquisaSexo, pageable));
+
+    } else if (nomepesquisa != null && !nomepesquisa.isEmpty()) {
+
       modelAndView.addObject("pessoas",
           pessoaRepository.findPessoaByNamePage(nomepesquisa, pageable));
+
+    } else {
+      modelAndView.addObject("pessoas",
+          pessoaRepository.findAll(PageRequest.of(0, 5, Sort.by("nome"))));
     }
 
     modelAndView.addObject("pessoaobj", new Pessoa());
@@ -179,7 +181,8 @@ public class PessoaController {
 
   @GetMapping("**/pesquisarpessoa")
   public void imprimePdf(@RequestParam("nomepesquisa") String nomepesquisa,
-      @RequestParam("pesquisaSexo") String pesquisaSexo, HttpServletRequest request, HttpServletResponse response) throws Exception {
+      @RequestParam("pesquisaSexo") String pesquisaSexo, HttpServletRequest request, HttpServletResponse response)
+      throws Exception {
 
     List<Pessoa> pessoas = new ArrayList<>();
 

@@ -24,11 +24,11 @@ public class WebConfigSecurity extends WebSecurityConfigurerAdapter {
         .disable() // Desativa as configurações padrões de memória
         .authorizeRequests() // permite restringir acessos
         .antMatchers(HttpMethod.GET, "/").permitAll() // Qualquer usuário acessa a página inicial do sistema
-        .antMatchers(HttpMethod.GET, "/cadastropessoa").hasAnyRole("ADMIN")
+        .antMatchers(HttpMethod.GET, "/listarpessoas").hasAnyRole("ADMIN")
         .anyRequest().authenticated()
         .and().formLogin().permitAll() // permite qualquer usuário
         .loginPage("/login")
-        .defaultSuccessUrl("/cadastropessoa")
+        .defaultSuccessUrl("/listarpessoas")
         .failureUrl("/login?error=true")
         .and().logout().logoutSuccessUrl("/login") // Mapeia a url de Logout e invalida usuário autenticado
         .logoutRequestMatcher(new AntPathRequestMatcher("/logout"));

@@ -16,10 +16,10 @@ import com.diego.springbootthymeleaf.model.Pessoa;
 @Repository
 @Transactional
 public interface PessoaRepository extends JpaRepository<Pessoa, Long> {
-  @Query("select p from Pessoa p where p.nome like %?1%")
+  @Query("select p from Pessoa p where trim(p.nome) like %?1%")
   List<Pessoa> findPessoaByName(String nome);
 
-  @Query("select p from Pessoa p where p.nome like %?1% and p.sexo = ?2")
+  @Query("select p from Pessoa p where trim(p.nome) like %?1% and p.sexo = ?2")
   List<Pessoa> findPessoaByNameAndSexo(String nomepesquisa, String pesquisaSexo);
 
   @Query("select p from Pessoa p where p.sexo = ?1")
@@ -37,20 +37,32 @@ public interface PessoaRepository extends JpaRepository<Pessoa, Long> {
     return findAll(example, pageable);
   }
 
+  default Page<Pessoa> findPessoaBySexoPage(String sexo, Pageable pageable) {
+    Pessoa pessoa = new Pessoa();
+    pessoa.setSexo(sexo);;
+
+    ExampleMatcher exampleMatcher = ExampleMatcher.matchingAny().withMatcher("sexo",
+        ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase());
+
+    Example<Pessoa> example = Example.of(pessoa, exampleMatcher);
+
+    return findAll(example, pageable);
+  }
+
   default Page<Pessoa> findPessoaByNameAndSexoPage(String nome, String sexo, Pageable pageable) {
     
     Pessoa pessoa = new Pessoa();
     pessoa.setNome(nome);
     pessoa.setSexo(sexo);
 
-    ExampleMatcher exampleMatcher = ExampleMatcher.matchingAny()
+    ExampleMatcher exampleMatcher = ExampleMatcher.matchingAll()
         .withMatcher("nome", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
         .withMatcher("sexo", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase());
 
     Example<Pessoa> example = Example.of(pessoa, exampleMatcher);
 
-    Page<Pessoa> page = findAll(example, pageable);
+    Page<Pessoa> pessoas = findAll(example, pageable);
 
-    return page;
+    return pessoas;
   }
 }
