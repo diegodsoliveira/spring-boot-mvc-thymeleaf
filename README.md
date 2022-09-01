@@ -3,7 +3,7 @@
 Aplicação construída utilizando as seguintes tecnologias:
 
 - Html, CSS, Javascript, Jquery
-- Thymeleaf
+- Thymeleaf, Matherialize
 - Spring Boot MVC, Spring Data, Spring Security
 - Maven, PostgreSQL
 

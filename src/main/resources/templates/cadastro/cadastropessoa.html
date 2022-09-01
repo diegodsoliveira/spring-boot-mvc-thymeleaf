@@ -139,9 +139,9 @@
             </td>
             <td>
               <span th:if="${pessoa.sexo == 'MASCULINO'}"><i class="material-icons left tooltipped" data-position="top"
-                  data-tooltip="Feminino">male</i></span>
+                  data-tooltip="Masculino">male</i></span>
               <span th:unless="${pessoa.sexo == 'MASCULINO'}"><i class="material-icons left tooltipped"
-                  data-position="top" data-tooltip="Masculino">female</i></span>
+                  data-position="top" data-tooltip="Feminino">female</i></span>
             </td>
             <td th:text="${pessoa.profissao.nome}"></td>
             <td><span th:if="${pessoa.curriculo != null}"><a

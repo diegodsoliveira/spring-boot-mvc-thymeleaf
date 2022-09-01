@@ -38,6 +38,7 @@ public interface PessoaRepository extends JpaRepository<Pessoa, Long> {
   }
 
   default Page<Pessoa> findPessoaByNameAndSexoPage(String nome, String sexo, Pageable pageable) {
+    
     Pessoa pessoa = new Pessoa();
     pessoa.setNome(nome);
     pessoa.setSexo(sexo);
@@ -48,6 +49,8 @@ public interface PessoaRepository extends JpaRepository<Pessoa, Long> {
 
     Example<Pessoa> example = Example.of(pessoa, exampleMatcher);
 
-    return findAll(example, pageable);
+    Page<Pessoa> page = findAll(example, pageable);
+
+    return page;
   }
 }

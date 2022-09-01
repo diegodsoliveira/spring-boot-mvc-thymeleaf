@@ -137,6 +137,7 @@ public class PessoaController {
 
     if (pessoa.isPresent()) {
       modelAndView.addObject("pessoaobj", pessoa.get());
+      modelAndView.addObject("pessoas", pessoaRepository.findAll(PageRequest.of(0, 5, Sort.by("nome"))));
       modelAndView.addObject("profissoes", profissaoRepository.findAll());
     }
 
@@ -156,10 +157,9 @@ public class PessoaController {
   }
 
   @PostMapping("**/pesquisarpessoa")
-  public ModelAndView pesquisar(
-      @RequestParam("nomepesquisa") String nomepesquisa,
-      @RequestParam("pesquisaSexo") String pesquisaSexo,
-      @PageableDefault(size = 5, sort = {"nome"}) Pageable pageable) {
+  public ModelAndView pesquisar(@RequestParam("nomepesquisa") String nomepesquisa,
+      @RequestParam("pesquisaSexo") String pesquisaSexo, @PageableDefault(size = 5, sort = {"nome"}) Pageable pageable) {
+
     ModelAndView modelAndView = new ModelAndView(CADASTROPESSOA);
 
     if (pesquisaSexo != null && !pesquisaSexo.isEmpty()) {
@@ -178,10 +178,8 @@ public class PessoaController {
   }
 
   @GetMapping("**/pesquisarpessoa")
-  public void imprimePdf(
-      @RequestParam("nomepesquisa") String nomepesquisa,
-      @RequestParam("pesquisaSexo") String pesquisaSexo,
-      HttpServletRequest request, HttpServletResponse response) throws Exception {
+  public void imprimePdf(@RequestParam("nomepesquisa") String nomepesquisa,
+      @RequestParam("pesquisaSexo") String pesquisaSexo, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
     List<Pessoa> pessoas = new ArrayList<>();
 
