@@ -64,14 +64,14 @@
             <label for="sobrenome">Insira o sobrenome</label>
           </div>
           <div class="input-field col s2">
-            <input required class="datepicker" type="text" name="dataNascimento" id="dataNascimento"
+            <input required class="datepicker validate" type="text" name="dataNascimento" id="dataNascimento"
               th:field="*{dataNascimento}" placeholder="Data de nascimento">
             <label class="active" for="dataNascimento">Nascimento</label>
           </div>
         </div>
         <div class="row">
           <div class="input-field col s3">
-            <select th:field="*{sexo}" required>
+            <select th:field="*{sexo}" required class="validate">
               <option value="" selected th:text="--[Selecione]--"></option>
               <option value="MASCULINO" th:text="Masculino"></option>
               <option value="FEMININO" th:text="Feminino"></option>
@@ -79,14 +79,14 @@
             <label class="active" for="comboSexo">Selecione o sexo</label>
           </div>
           <div class="input-field col s2">
-            <select th:field="*{profissao}" required id="profissao">
+            <select th:field="*{profissao}" required id="profissao" class="validate">
               <option value="" selected th:text="--[Selecione]--"></option>
               <option th:each="p : ${profissoes}" th:value="${p.id}" th:text="${p.nome}"></option>
             </select>
             <label class="active" for="profissao">Profissão</label>
           </div>
           <div class="input-field col s2">
-            <select th:field="*{cargo}" required id="cargo">
+            <select th:field="*{cargo}" required id="cargo" class="validate">
               <option value="" selected th:text="--[Selecione]--"></option>
               <option th:each="c : ${T(com.diego.springbootthymeleaf.model.Cargo).values()}" th:value="${c}"
                 th:text="${c.nome}"></option>
@@ -94,8 +94,8 @@
             <label class="active" for="cargo">Cargo</label>
           </div>
           <div class="input-field col s2">
-            <input type="file" name="file" id="file" accept=".pdf">
-            <label class="active" for="file">Currículo</label>
+            <input class="file-field input-field validate" type="file" name="file" id="file" accept=".pdf">
+            <label class="active" for="file" th:field="*{curriculo}">Currículo</label>
           </div>
         </div>
 
@@ -119,36 +119,65 @@
             <tr>
               <th>ID</th>
               <th>Nome</th>
-              <th>Sobrenome</th>
+              <th>Sexo</th>
               <th>Profissão</th>
-              <th>Editar</th>
+              <th>Currículo</th>
+              <th>Opções</th>
             </tr>
           </thead>
-          <tr th:each="pessoa : ${pessoas}">
+          <tr th:each="pessoa : ${pessoas.content}">
             <td th:text="${pessoa.id}"></td>
             <td>
-              <a th:href="@{/telefones/{idpessoa}(idpessoa=${pessoa.id})}">
-                <span th:text="${pessoa.nome}"></span>
+              <a class="tooltipped" data-position="top" data-tooltip="Visualizar detalhes"
+                th:href="@{/telefones/{idpessoa}(idpessoa=${pessoa.id})}">
+                <span th:text="${pessoa.nome} + ' ' + ${pessoa.sobrenome}"></span>
               </a>
             </td>
-            <td th:text="${pessoa.sobrenome}"></td>
+            <td>
+              <span th:if="${pessoa.sexo == 'MASCULINO'}"><i class="material-icons left tooltipped" data-position="top"
+                  data-tooltip="Feminino">male</i></span>
+              <span th:unless="${pessoa.sexo == 'MASCULINO'}"><i class="material-icons left tooltipped"
+                  data-position="top" data-tooltip="Masculino">female</i></span>
+            </td>
             <td th:text="${pessoa.profissao.nome}"></td>
+            <td><span th:if="${pessoa.curriculo != null}"><a
+                  th:href="@{/baixarcurriculo/{idpessoa}(idpessoa=${pessoa.id})}">
+                  <i class="material-icons left">picture_as_pdf</i></a></span>
+              <span th:unless="${pessoa.curriculo != null}"><i
+                  class="material-icons left">disabled_by_default</i></span>
+            </td>
             <td class="row">
-              <a class="col" th:href="@{/editarpessoa/{idpessoa}(idpessoa=${pessoa.id})}">Editar</a>
-              <a class="col red-text" th:href="@{/excluirpessoa/{idpessoa}(idpessoa=${pessoa.id})}">Excluir</a>
+              <a class="col" th:href="@{/editarpessoa/{idpessoa}(idpessoa=${pessoa.id})}"><i
+                  class="material-icons left tooltipped" data-position="top" data-tooltip="Editar">edit</i></a>
+              <a class="col red-text" th:href="@{/excluirpessoa/{idpessoa}(idpessoa=${pessoa.id})}"><i
+                  class="material-icons left tooltipped" data-position="top" data-tooltip="Excluir">delete</i></a>
             </td>
           </tr>
         </table>
+        <ul class="pagination center">
+          <li th:if="${pessoas.hasPrevious()}"><a
+              th:href="@{/pessoaspag(page=${pessoas.number - 1}, size=${pessoas.size}, nomepesquisa=${nomepesquisa})}">
+              <i class="material-icons">chevron_left</i></a></li>
+          <th:block th:each="i : ${#numbers.sequence(0, pessoas.totalPages - 1)}">
+            <li>
+              <a class="waves-effect" th:href="@{/pessoaspag(page=${i}, size=${pessoas.size}, nomepesquisa=${nomepesquisa})}">[[ ${i} + 1 ]]</a>
+            </li>
+          </th:block>
+          <li th:if="${pessoas.hasNext()}"><a
+              th:href="@{/pessoaspag(page=${pessoas.number + 1}, size=${pessoas.size}, nomepesquisa=${nomepesquisa})}">
+              <i class="material-icons">chevron_right</i></a></li>
+        </ul>
       </div>
     </div>
     <div class="row">
       <form class="col s12" action="pesquisarpessoa" method="post" id="pesquisarpessoa">
         <div class="input-field">
           <div class="col s3">
-            <input placeholder="Pesquisa por nome" id="nomepesquisa" name="nomepesquisa" type="text" class="validate">
+            <input placeholder="Pesquisa por nome" id="nomepesquisa" name="nomepesquisa" type="text" class="validate"
+              th:value="${nomepesquisa}">
           </div>
           <div class="input-field col s2">
-            <select class="browser-default" id="pesquisaSexo" name="pesquisaSexo">
+            <select class="" id="pesquisaSexo" name="pesquisaSexo">
               <option value="" th:text="--[Todos]--"></option>
               <option value="MASCULINO" th:text="Masculino"></option>
               <option value="FEMININO" th:text="Feminino"></option>
@@ -176,7 +205,11 @@
   <script>
 
     $(document).ready(function () {
+
+
       $('select').formSelect();
+
+      $('.tooltipped').tooltip();
 
       $('#dataNascimento').datepicker({
         yearRange: 80,

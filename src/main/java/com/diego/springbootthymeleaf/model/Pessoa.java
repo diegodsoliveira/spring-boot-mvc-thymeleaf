@@ -59,6 +59,26 @@ public class Pessoa implements Serializable {
   @Lob
   private byte[] curriculo;
 
+  private String tipoFileCurriculo;
+  private String nomeFileCurriculo;
+
+  public String getTipoFileCurriculo() {
+    return this.tipoFileCurriculo;
+  }
+
+  public void setTipoFileCurriculo(String tipoFileCurriculo) {
+    this.tipoFileCurriculo = tipoFileCurriculo;
+  }
+
+  public String getNomeFileCurriculo() {
+    return this.nomeFileCurriculo;
+  }
+
+  public void setNomeFileCurriculo(String nomeFileCurriculo) {
+    this.nomeFileCurriculo = nomeFileCurriculo;
+  }
+
+
   public void setCurriculo(byte[] curriculo) {
     this.curriculo = curriculo;
   }
