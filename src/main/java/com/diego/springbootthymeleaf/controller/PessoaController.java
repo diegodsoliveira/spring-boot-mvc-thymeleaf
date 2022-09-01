@@ -30,6 +30,8 @@ import com.diego.springbootthymeleaf.repository.PessoaRepository;
 import com.diego.springbootthymeleaf.repository.ProfissaoRepository;
 import com.diego.springbootthymeleaf.repository.TelefoneRepository;
 
+import net.sf.jasperreports.engine.JRException;
+
 @Controller
 public class PessoaController {
 
@@ -64,8 +66,9 @@ public class PessoaController {
   public ModelAndView carregaPessoaPorPaginacao(@PageableDefault(size = 5) Pageable pageable,
       ModelAndView modelAndView, @RequestParam("nomepesquisa") String nomepesquisa,
       @RequestParam("pesquisaSexo") String pesquisaSexo) {
+
     modelAndView.addObject("pessoas",
-        pessoaRepository.findPessoaBySexoOrNamePage(nomepesquisa, pesquisaSexo, pageable));
+        pessoaRepository.findAll(PageRequest.of(0, 5, Sort.by("nome"))));
     modelAndView.addObject("pessoaobj", new Pessoa());
     modelAndView.addObject("nomepesquisa", nomepesquisa);
     modelAndView.addObject("profissoes", profissaoRepository.findAll());
@@ -159,12 +162,18 @@ public class PessoaController {
       modelAndView.addObject("pessoas",
           pessoaRepository.findPessoaByNameAndSexoPage(nomepesquisa, pesquisaSexo, pageable));
 
-    } else if (pesquisaSexo != null && !pesquisaSexo.isEmpty() || nomepesquisa != null && !nomepesquisa.isEmpty()) {
+    } else if (pesquisaSexo != null && !pesquisaSexo.isEmpty()) {
 
       modelAndView.addObject("pessoas",
-          pessoaRepository.findPessoaBySexoOrNamePage(nomepesquisa, pesquisaSexo, pageable));
+          pessoaRepository.findPessoaBySexoPage(pesquisaSexo, pageable));
 
-    } else {
+    } 
+    else if (nomepesquisa != null && !nomepesquisa.isEmpty()) {
+
+      modelAndView.addObject("pessoas",
+          pessoaRepository.findPessoaByNamePage(nomepesquisa, pageable));
+
+    }else {
       modelAndView.addObject("pessoas",
           pessoaRepository.findAll(PageRequest.of(0, 5, Sort.by("nome"))));
     }
@@ -179,7 +188,7 @@ public class PessoaController {
   @GetMapping("**/pesquisarpessoa")
   public void imprimePdf(@RequestParam("nomepesquisa") String nomepesquisa,
       @RequestParam("pesquisaSexo") String pesquisaSexo, HttpServletRequest request, HttpServletResponse response)
-      throws Exception {
+      throws JRException, IOException {
 
     List<Pessoa> pessoas = new ArrayList<>();
 

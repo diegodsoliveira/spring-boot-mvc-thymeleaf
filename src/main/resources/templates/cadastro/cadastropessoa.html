@@ -160,15 +160,15 @@
         </table>
         <ul class="pagination center">
           <li th:if="${pessoas.hasPrevious()}"><a
-              th:href="@{/pessoaspag(page=${pessoas.number - 1}, size=${pessoas.size}, nomepesquisa=${nomepesquisa})}">
+              th:href="@{/pessoaspag(page=${pessoas.number - 1}, size=${pessoas.size}, nomepesquisa=${nomepesquisa}, pesquisaSexo=${pesquisaSexo})}">
               <i class="material-icons">chevron_left</i></a></li>
           <th:block th:each="i : ${#numbers.sequence(0, pessoas.totalPages - 1)}">
             <li>
-              <a class="waves-effect" th:href="@{/pessoaspag(page=${i}, size=${pessoas.size}, nomepesquisa=${nomepesquisa})}">[[ ${i} + 1 ]]</a>
+              <a class="waves-effect" th:href="@{/pessoaspag(page=${i}, size=${pessoas.size}, nomepesquisa=${nomepesquisa}, pesquisaSexo=${pesquisaSexo})}">[[ ${i} + 1 ]]</a>
             </li>
           </th:block>
           <li th:if="${pessoas.hasNext()}"><a
-              th:href="@{/pessoaspag(page=${pessoas.number + 1}, size=${pessoas.size}, nomepesquisa=${nomepesquisa})}">
+              th:href="@{/pessoaspag(page=${pessoas.number + 1}, size=${pessoas.size}, nomepesquisa=${nomepesquisa}, pesquisaSexo=${pesquisaSexo})}">
               <i class="material-icons">chevron_right</i></a></li>
         </ul>
       </div>
