@@ -25,24 +25,13 @@ public interface PessoaRepository extends JpaRepository<Pessoa, Long> {
   @Query("select p from Pessoa p where p.sexo = ?1")
   List<Pessoa> findPessoaBySexo(String pesquisaSexo);
 
-  default Page<Pessoa> findPessoaByNamePage(String nome, Pageable pageable) {
+  default Page<Pessoa> findPessoaBySexoOrNamePage(String nome, String sexo, Pageable pageable) {
     Pessoa pessoa = new Pessoa();
     pessoa.setNome(nome);
 
-    ExampleMatcher exampleMatcher = ExampleMatcher.matchingAny().withMatcher("nome",
-        ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase());
-
-    Example<Pessoa> example = Example.of(pessoa, exampleMatcher);
-
-    return findAll(example, pageable);
-  }
-
-  default Page<Pessoa> findPessoaBySexoPage(String sexo, Pageable pageable) {
-    Pessoa pessoa = new Pessoa();
-    pessoa.setSexo(sexo);;
-
-    ExampleMatcher exampleMatcher = ExampleMatcher.matchingAny().withMatcher("sexo",
-        ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase());
+    ExampleMatcher exampleMatcher = ExampleMatcher.matchingAny()
+        .withMatcher("nome", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
+        .withMatcher("sexo", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase());
 
     Example<Pessoa> example = Example.of(pessoa, exampleMatcher);
 
@@ -61,8 +50,6 @@ public interface PessoaRepository extends JpaRepository<Pessoa, Long> {
 
     Example<Pessoa> example = Example.of(pessoa, exampleMatcher);
 
-    Page<Pessoa> pessoas = findAll(example, pageable);
-
-    return pessoas;
+    return findAll(example, pageable);
   }
 }

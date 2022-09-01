@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -63,8 +62,10 @@ public class PessoaController {
 
   @GetMapping("**/pessoaspag")
   public ModelAndView carregaPessoaPorPaginacao(@PageableDefault(size = 5) Pageable pageable,
-      ModelAndView modelAndView, @RequestParam("nomepesquisa") String nomepesquisa) {
-    modelAndView.addObject("pessoas", pessoaRepository.findPessoaByNamePage(nomepesquisa, pageable));
+      ModelAndView modelAndView, @RequestParam("nomepesquisa") String nomepesquisa,
+      @RequestParam("pesquisaSexo") String pesquisaSexo) {
+    modelAndView.addObject("pessoas",
+        pessoaRepository.findPessoaBySexoOrNamePage(nomepesquisa, pesquisaSexo, pageable));
     modelAndView.addObject("pessoaobj", new Pessoa());
     modelAndView.addObject("nomepesquisa", nomepesquisa);
     modelAndView.addObject("profissoes", profissaoRepository.findAll());
@@ -147,7 +148,8 @@ public class PessoaController {
 
   @PostMapping("**/pesquisarpessoa")
   public ModelAndView pesquisar(@RequestParam("nomepesquisa") String nomepesquisa,
-      @RequestParam("pesquisaSexo") String pesquisaSexo, @PageableDefault(size = 5, sort = {"nome"}) Pageable pageable) {
+      @RequestParam("pesquisaSexo") String pesquisaSexo,
+      @PageableDefault(size = 5, sort = { "nome" }) Pageable pageable) {
 
     ModelAndView modelAndView = new ModelAndView(CADASTROPESSOA);
 
@@ -157,15 +159,10 @@ public class PessoaController {
       modelAndView.addObject("pessoas",
           pessoaRepository.findPessoaByNameAndSexoPage(nomepesquisa, pesquisaSexo, pageable));
 
-    } else if (pesquisaSexo != null && !pesquisaSexo.isEmpty()) {
+    } else if (pesquisaSexo != null && !pesquisaSexo.isEmpty() || nomepesquisa != null && !nomepesquisa.isEmpty()) {
 
       modelAndView.addObject("pessoas",
-          pessoaRepository.findPessoaBySexoPage(pesquisaSexo, pageable));
-
-    } else if (nomepesquisa != null && !nomepesquisa.isEmpty()) {
-
-      modelAndView.addObject("pessoas",
-          pessoaRepository.findPessoaByNamePage(nomepesquisa, pageable));
+          pessoaRepository.findPessoaBySexoOrNamePage(nomepesquisa, pesquisaSexo, pageable));
 
     } else {
       modelAndView.addObject("pessoas",
@@ -228,21 +225,19 @@ public class PessoaController {
       throws IOException {
     Optional<Pessoa> optional = pessoaRepository.findById(idpessoa);
 
-    if (optional.isPresent()) {
+    if (optional.isPresent() && optional.get().getCurriculo() != null) {
 
-      if (optional.get().getCurriculo() != null) {
-        response.setContentLength(optional.get().getCurriculo().length);
+      response.setContentLength(optional.get().getCurriculo().length);
 
-        /* generic = application/octet-stream */
-        response.setContentType(optional.get().getTipoFileCurriculo());
+      /* generic = application/octet-stream */
+      response.setContentType(optional.get().getTipoFileCurriculo());
 
-        String headerKey = "Content-Disposition";
-        String headerValue = String.format("attachment; filename=\"%s\"", optional.get().getNomeFileCurriculo());
+      String headerKey = "Content-Disposition";
+      String headerValue = String.format("attachment; filename=\"%s\"", optional.get().getNomeFileCurriculo());
 
-        response.setHeader(headerKey, headerValue);
+      response.setHeader(headerKey, headerValue);
 
-        response.getOutputStream().write(optional.get().getCurriculo());
-      }
+      response.getOutputStream().write(optional.get().getCurriculo());
     }
   }
 }
