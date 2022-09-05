@@ -68,7 +68,7 @@ public class PessoaController {
       @RequestParam("pesquisaSexo") String pesquisaSexo) {
 
     modelAndView.addObject("pessoas",
-        pessoaRepository.findAll(PageRequest.of(0, 5, Sort.by("nome"))));
+        pessoaRepository.findAll(PageRequest.of(pageable.getPageNumber(),pageable.getPageSize(), Sort.by("nome"))));
     modelAndView.addObject("pessoaobj", new Pessoa());
     modelAndView.addObject("nomepesquisa", nomepesquisa);
     modelAndView.addObject("profissoes", profissaoRepository.findAll());
