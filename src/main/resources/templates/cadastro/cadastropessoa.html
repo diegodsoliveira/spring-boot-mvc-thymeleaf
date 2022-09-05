@@ -50,7 +50,7 @@
       <h5>Cadastrar cliente</h5>
     </div>
     <div class="row">
-      <form class="col s12" action="/salvarpessoa" id="formPessoa" method="post" th:object="${pessoaobj}"
+      <form class="col s12" th:action="@{/salvarpessoa}" id="formPessoa" method="post" th:object="${pessoaobj}"
         enctype="multipart/form-data">
         <div class="row">
           <div class="input-field col s1">
@@ -192,7 +192,7 @@
             <button type="submit" class="waves-effect waves-light btn">
               <i class="material-icons left">search</i>Buscar
             </button>
-            <a href="/listarpessoas" class="waves-effect waves-light btn">
+            <a th:href="@{/listarpessoas}" class="waves-effect waves-light btn">
               <i class="material-icons left">list</i>Listar todos</a>
             <button type="submit" onclick="document.getElementById('pesquisarpessoa').method = 'get'"
               class="waves-effect waves-light btn">

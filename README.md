@@ -7,4 +7,4 @@ Aplicação construída utilizando as seguintes tecnologias:
 - Spring Boot MVC, Spring Data, Spring Security
 - Maven, PostgreSQL
 
-Acesse o projeto e teste: https://spring-web-mvc-thymeleaf.herokuapp.com/
+Acesse o projeto e teste: https://tomcat.diegooliveirapro.com.br/thymeleaf/login
